@@ -104,8 +104,8 @@ ENV/
 # VIM stuff
 *.swp
 
-# data downloaded automatically using pull_data.sh
+# datasets and run results
 data/
-
-# saved model files
+decodes/
 saved_models/
+logs/
