@@ -1,0 +1,7 @@
+# VIM stuff.
+*.swp
+
+# Temporary build data.
+nltk_data
+*.zip
+

@@ -2,9 +2,11 @@ import json
 import sys
 import numpy as np
 import pickle
+from tqdm import tqdm
 
 from components.action_info import get_action_infos
 from datasets.conala.util import *
+from datasets.conala.evaluator import ConalaEvaluator
 from asdl.lang.py3.py3_transition_system import python_ast_to_asdl_ast, asdl_ast_to_python_ast, Python3TransitionSystem
 
 from asdl.hypothesis import *
@@ -16,15 +18,15 @@ from components.dataset import Dataset
 from components.action_info import ActionInfo
 
 
-def preprocess_conala_dataset(train_file, test_file, grammar_file, src_freq=3, code_freq=3):
+def preprocess_conala_dataset(args, src_freq=3, code_freq=3):
     np.random.seed(1234)
 
-    asdl_text = open(grammar_file).read()
+    asdl_text = open(args.grammar_file).read()
     grammar = ASDLGrammar.from_text(asdl_text)
     transition_system = Python3TransitionSystem(grammar)
 
     print('process training data...')
-    train_examples = preprocess_dataset(train_file, name='train', transition_system=transition_system)
+    train_examples = preprocess_dataset(args.train_file, name='train', transition_system=transition_system)
 
     # held out 200 examples for development
     full_train_examples = train_examples[:]
@@ -49,7 +51,7 @@ def preprocess_conala_dataset(train_file, test_file, grammar_file, src_freq=3, c
     print(f'{len(dev_examples)} dev instances', file=sys.stderr)
 
     print('process testing data...')
-    test_examples = preprocess_dataset(test_file, name='test', transition_system=transition_system)
+    test_examples = preprocess_dataset(args.test_file, name='test', transition_system=transition_system)
     print(f'{len(test_examples)} testing instances', file=sys.stderr)
 
     src_vocab = VocabEntry.from_corpus([e.src_sent for e in train_examples], size=5000,
@@ -71,11 +73,11 @@ def preprocess_conala_dataset(train_file, test_file, grammar_file, src_freq=3, c
     print('Avg action len: %d' % np.average(action_lens), file=sys.stderr)
     print('Actions larger than 100: %d' % len(list(filter(lambda x: x > 100, action_lens))), file=sys.stderr)
 
-    pickle.dump(train_examples, open('data/conala/train.var_str_sep.bin', 'wb'))
-    pickle.dump(full_train_examples, open('data/conala/train.var_str_sep.full.bin', 'wb'))
-    pickle.dump(dev_examples, open('data/conala/dev.var_str_sep.bin', 'wb'))
-    pickle.dump(test_examples, open('data/conala/test.var_str_sep.bin', 'wb'))
-    pickle.dump(vocab, open('data/conala/vocab.var_str_sep.new_dev.src_freq%d.code_freq%d.bin' % (src_freq, code_freq), 'wb'))
+    pickle.dump(train_examples, open(args.train_examples, 'wb'))
+    pickle.dump(full_train_examples, open(args.full_train_examples, 'wb'))
+    pickle.dump(dev_examples, open(args.dev_examples, 'wb'))
+    pickle.dump(test_examples, open(args.test_examples, 'wb'))
+    pickle.dump(vocab, open(args.vocab, 'wb'))
 
 
 def preprocess_dataset(file_path, transition_system, name='train'):
@@ -85,7 +87,7 @@ def preprocess_dataset(file_path, transition_system, name='train'):
 
     f = open(file_path + '.debug', 'w')
 
-    for i, example_json in enumerate(dataset):
+    for i, example_json in enumerate(tqdm(dataset)):
         example_dict = preprocess_example(example_json)
         if example_json['question_id'] in (18351951, 9497290, 19641579, 32283692):
             print(example_json['question_id'])
@@ -189,9 +191,34 @@ def generate_vocab_for_paraphrase_model(vocab_path, save_path):
 
 
 if __name__ == '__main__':
+    import argparse
+
+    parser = argparse.ArgumentParser()
+    parser.add_argument('dataset', type=str, default='conala')
+    args = parser.parse_args()
+
+    if args.dataset == 'conala':
+        args.train_file = 'data/conala/conala-train.json'
+        args.test_file = 'data/conala/conala-test.json'
+        args.grammar_file = 'asdl/lang/py3/py3_asdl.simplified.txt'
+        args.train_examples = 'data/conala/train.var_str_sep.bin'
+        args.full_train_examples = 'data/conala/train.var_str_sep.full.bin'
+        args.dev_examples = 'data/conala/dev.var_str_sep.bin'
+        args.test_examples = 'data/conala/test.var_str_sep.bin'
+        args.vocab = 'data/conala/vocab.bin'
+    elif args.dataset == 'our':
+        args.train_file = 'data/our/train_small.json'
+        args.test_file = 'data/our/train_small.json'
+        args.grammar_file = 'asdl/lang/py3/py3_asdl.simplified.txt'
+        args.train_examples = 'data/our/train_examples.bin'
+        args.full_train_examples = 'data/our/full_train_examples.bin'
+        args.dev_examples = 'data/our/dev_examples.bin'
+        args.test_examples = 'data/our/test_examples.bin'
+        args.vocab = 'data/our/vocab.bin'
+    else:
+        raise RuntimeError('Unknown dataset')
+
     # the json files can be download from http://conala-corpus.github.io
-    preprocess_conala_dataset(train_file='data/conala/conala-train.json',
-                              test_file='data/conala/conala-test.json',
-                              grammar_file='asdl/lang/py3/py3_asdl.simplified.txt', src_freq=3, code_freq=3)
+    preprocess_conala_dataset(args, src_freq=3, code_freq=3)
 
     # generate_vocab_for_paraphrase_model('data/conala/vocab.src_freq3.code_freq3.bin', 'data/conala/vocab.para.src_freq3.code_freq3.bin')
