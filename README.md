@@ -20,8 +20,8 @@ Run the original TranX in a containerized environment.
     * `mkdir -p nltk_data/tokenizers/`.
     * `unzip punkt.zip -d nltk_data/tokenizers/`.
     * `rm punkt.zip`.
-1. **Build the docker image:** `docker build -t tranx .`.
-1. **Run the container:** `docker run --name tranx --cpus 2.0 -p 8081:8081 -it --rm tranx`.
+1. **Build the docker image:** `docker build -t tranx_original .`.
+1. **Run the container:** `docker run --name tranx_original --cpus 2.0 -p 8081:8081 -it --rm tranx_original:latest`.
 
 ### Docker cleanup reference
 
@@ -38,4 +38,3 @@ Run the original TranX in a containerized environment.
 * **Train on dataset:** `chmod +x ./scripts/our/train.sh && ./scripts/our/train.sh 0`.
 * **Test on dataset and model:** `chmod +x ./scripts/our/test.sh && ./scripts/our/test.sh $(ls -dt $PWD/saved_models/our | head -n1)`.
 * **Run Flask server:** `python server/app.py --config_file config/server/config_py3.json --model $(ls -dt $PWD/saved_models/our | head -n1)`.
-
