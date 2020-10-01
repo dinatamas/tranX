@@ -23,4 +23,6 @@ do
 	mkdir -p decodes/${dataset}
 done
 
+touch data/atis/iata.txt
+
 echo "Done!"

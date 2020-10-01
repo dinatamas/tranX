@@ -8,7 +8,7 @@ MAINTAINER Dina Tamás Pál
 SHELL ["/bin/bash", "-c"]
 WORKDIR /home/root/tranX/
 ENV PYTHONPATH=/home/root/tranX
-EXPOSE 3000/tcp
+EXPOSE 8081/tcp
 
 # Copy NLTK data.
 COPY nltk_data/ /home/root/nltk_data/

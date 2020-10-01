@@ -2,7 +2,6 @@
   "django": {
     "parser": "default_parser",
     "example_processor": "django_example_processor",
-    "model_path": "data/pretrained_models/django.bin",
     "beam_size": 15
   }
 }

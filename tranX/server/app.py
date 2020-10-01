@@ -19,6 +19,7 @@ def init_arg_parser():
     arg_parser.add_argument('--config_file', type=str, required=True,
                             help='Config file that specifies model to load, see online doc for an example')
     arg_parser.add_argument('--port', type=int, required=False, default=8081)
+    arg_parser.add_argument('--model', type=str, required=True)
 
     return arg_parser
 
@@ -68,7 +69,7 @@ if __name__ == '__main__':
 
     for parser_id, config in config_dict.items():
         parser = StandaloneParser(parser_name=config['parser'],
-                                  model_path=config['model_path'],
+                                  model_path=args.model,
                                   example_processor_name=config['example_processor'],
                                   beam_size=config['beam_size'],
                                   cuda=args.cuda)
