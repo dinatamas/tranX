@@ -21,7 +21,7 @@ Run the original TranX in a containerized environment.
     * `unzip punkt.zip -d nltk_data/tokenizers/`.
     * `rm punkt.zip`
 1. **Build the docker image:** `docker build -t tranx .`.
-1. **Run the container:** `docker run --name tranx -it --rm tranx`.
+1. **Run the container:** `docker run --name tranx --cpus 2.0 -it --rm tranx`.
 
 ### Docker cleanup reference
 
@@ -35,8 +35,8 @@ Run the original TranX in a containerized environment.
 ## Use TranX and run commands
 
 1. **Pickle dataset:** `python ./datasets/conala/dataset.py our`
-1. **Train on dataset:** ` `.
-1. **Test on dataset:** ` `.
+1. **Train on dataset:** `chmod +x ./scripts/our/train.sh && ./scripts/our/train.sh 0`.
+1. **Test on dataset and model:** `chmod +x ./scripts/our/test.sh && ./scripts/our/test.sh $(ls -t ./saved_models/our | head -n1)`.
 1. **Run Flask server:** ` `.
 
 ## TODOs
@@ -46,5 +46,4 @@ Run the original TranX in a containerized environment.
     * Rebase container image from Miniconda3 to Nvidia CUDA? Install Miniconda3 after.
       Note: what if the host does not have CUDA?
     * Expose GPUs to the container.
-* Limit Docker resources to avoid killing my machine.
 
