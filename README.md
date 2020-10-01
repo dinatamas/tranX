@@ -4,7 +4,7 @@
 
 Run the original TranX in a containerized environment.
 
-## Build from the source
+## Build from source
 
 1. **System upgrades:** `sudo apt-get update && sudo apt-get upgrade -y`.
 1. **Install Docker:**
@@ -34,8 +34,8 @@ Run the original TranX in a containerized environment.
 
 ## Use TranX and run commands
 
-1. **Pickle dataset:** `python ./datasets/conala/dataset.py our`
-1. **Train on dataset:** `chmod +x ./scripts/our/train.sh && ./scripts/our/train.sh 0`.
-1. **Test on dataset and model:** `chmod +x ./scripts/our/test.sh && ./scripts/our/test.sh $(ls -dt $PWD/saved_models/our | head -n1)`.
-1. **Run Flask server:** `python server/app.py --config_file config/server/config_py3.json --model $(ls -dt $PWD/saved_models/our | head -n1)`.
+* **Pickle dataset:** `python ./datasets/conala/dataset.py our`
+* **Train on dataset:** `chmod +x ./scripts/our/train.sh && ./scripts/our/train.sh 0`.
+* **Test on dataset and model:** `chmod +x ./scripts/our/test.sh && ./scripts/our/test.sh $(ls -dt $PWD/saved_models/our | head -n1)`.
+* **Run Flask server:** `python server/app.py --config_file config/server/config_py3.json --model $(ls -dt $PWD/saved_models/our | head -n1)`.
 
