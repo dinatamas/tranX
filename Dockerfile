@@ -7,7 +7,7 @@ MAINTAINER Dina Tamás Pál
 # Set defaults.
 SHELL ["/bin/bash", "-c"]
 WORKDIR /home/root/tranX/
-ENV PYTHONPATH=/home/root/tranX
+ENV PYTHONPATH=/home/root/tranX/
 EXPOSE 8081/tcp
 
 # Copy NLTK data.
