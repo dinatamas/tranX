@@ -16,8 +16,7 @@ def init_arg_parser():
 
     #### General configuration ####
     arg_parser.add_argument('--cuda', action='store_true', default=False, help='Use gpu')
-    arg_parser.add_argument('--config_file', type=str, required=True,
-                            help='Config file that specifies model to load, see online doc for an example')
+    arg_parser.add_argument('--config_file', type=str, required=True)
     arg_parser.add_argument('--port', type=int, required=False, default=8081)
     arg_parser.add_argument('--model', type=str, required=True)
 
