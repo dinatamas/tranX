@@ -21,14 +21,15 @@ Run the original TranX in a containerized environment.
 1. **Install dependencies:** `sudo apt-get install git unzip wget -y`.
 1. **Clone the repository:** `git clone https://github.com/dinatamas/tranX_original`.
 1. **Enter the repository:** `cd tranX_original`.
-1. **Load dataset files:** `chmod +x ./tranX/pull_data.sh && ./tranX/pull_data.sh`.
+1. **Load dataset files:** `pushd tranX && chmod +x ./pull_data.sh && ./pull_data.sh && popd`.
 1. **Load NLTK data:**
     * `wget https://raw.githubusercontent.com/nltk/nltk_data/gh-pages/packages/tokenizers/punkt.zip`.
     * `mkdir -p nltk_data/tokenizers/`.
     * `unzip punkt.zip -d nltk_data/tokenizers/`.
     * `rm punkt.zip`.
 1. **Build the docker image:** `docker build -t tranx_original .`.
-1. **Run the container:** `docker run --name tranx_original --cpus 2.0 -p 8081:8081 -it --rm tranx_original:latest`.
+1. **Run the container:** `docker run --name tranx_original --cpus 2.0 -p 8081:8081 -it -d tranx_original:latest`.
+1. **Enter the container's shell:** `docker exec tranx_original -it /bin/bash`.
 
 ## Build from the source | Windows
 
@@ -56,7 +57,8 @@ _Another option is to use the Windows Subsytem for Linux._
     * Download https://raw.githubusercontent.com/nltk/nltk_data/gh-pages/packages/tokenizers/punkt.zip
     * Unzip the contents of this archive to `.\nltk_data\tokenizers\`.
 1. **Build the docker image:** `docker build -t tranx_original .`.
-1. **Run the container:** `docker run --name tranx_original --cpus 2.0 -p 8081:8081 -it --rm tranx_original:latest`.
+1. **Run the container:** `docker run --name tranx_original --cpus 2.0 -p 8081:8081 -it -d tranx_original:latest`.
+1. **Enter the container's shell:** `docker exec tranx_original -it /bin/bash`.
 
 ## Docker cleanup reference
 
