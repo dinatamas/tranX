@@ -4,3 +4,9 @@
 # Temporary build data.
 nltk_data/
 *.zip
+
+# Accidental tranX data.
+data/
+logs/
+decodes/
+saved_models/
