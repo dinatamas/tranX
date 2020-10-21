@@ -21,7 +21,7 @@ Run the original TranX in a containerized environment.
 1. **Install dependencies:** `sudo apt-get install git unzip wget -y`.
 1. **Clone the repository:** `git clone https://github.com/dinatamas/tranX_original`.
 1. **Enter the repository:** `cd tranX_original`.
-1. **Load dataset files:** `chmod +x .tranX/pull_data.sh && ./tranX/pull_data.sh`.
+1. **Load dataset files:** `chmod +x ./tranX/pull_data.sh && ./tranX/pull_data.sh`.
 1. **Load NLTK data:**
     * `wget https://raw.githubusercontent.com/nltk/nltk_data/gh-pages/packages/tokenizers/punkt.zip`.
     * `mkdir -p nltk_data/tokenizers/`.
